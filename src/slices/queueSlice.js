@@ -1,6 +1,7 @@
 // src/slices/queueSlice.js
 import { createSlice, nanoid } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { BASE_URL } from '../config';
 
 // Creamos el slice "queue"
 const queueSlice = createSlice({
@@ -45,7 +46,7 @@ export const flushQueue = () => async (dispatch, getState) => {
 
   // Creamos instancia de axios con el token
   const api = axios.create({
-    baseURL: 'https://dicsapps.space:3005/api',
+    baseURL: BASE_URL,
     headers: { Authorization: `Bearer ${token}` }
   });
 
