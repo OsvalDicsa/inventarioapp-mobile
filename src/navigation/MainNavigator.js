@@ -7,6 +7,7 @@ import ClientListScreen from '../screens/ClientListScreen';
 import CaptureScreen from '../screens/CaptureScreen';
 import { isJwtExpired } from '../utils/jwt';
 import { logout } from '../slices/authSlice';
+import { colors } from '../theme';
 
 const Stack = createStackNavigator();
 
@@ -22,14 +23,31 @@ export default function MainNavigator() {
   }, [token, dispatch]);
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: colors.primary },
+        headerTintColor: colors.white
+      }}
+    >
       {isLoggedIn ? (
         <>
-          <Stack.Screen name="Clients" component={ClientListScreen} />
-          <Stack.Screen name="Capture" component={CaptureScreen} />
+          <Stack.Screen
+            name="Clients"
+            component={ClientListScreen}
+            options={{ title: 'Clientes' }}
+          />
+          <Stack.Screen
+            name="Capture"
+            component={CaptureScreen}
+            options={{ title: 'Registro' }}
+          />
         </>
       ) : (
-        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        />
       )}
     </Stack.Navigator>
   );
