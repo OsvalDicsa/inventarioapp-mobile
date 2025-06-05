@@ -2,8 +2,9 @@
 import axios from 'axios';
 import { store } from '../store';
 import { addPendingRequest } from '../slices/queueSlice';
+import { API_BASE_URL } from '../config';
 
-const api = axios.create({ baseURL: 'https://dicsapps.space:3005/api' });
+const api = axios.create({ baseURL: API_BASE_URL });
 
 api.interceptors.request.use(config => {
   const token = store.getState().auth.token;
