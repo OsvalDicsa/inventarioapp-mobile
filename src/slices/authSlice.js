@@ -1,8 +1,9 @@
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 
-const API = axios.create({ baseURL: 'https://dicsapps.space:3005/api' });
+const API = axios.create({ baseURL: API_BASE_URL });
 
 export const login = createAsyncThunk('auth/login', async ({ username, password }) => {
   const { data } = await API.post('/auth/login', { username, password });

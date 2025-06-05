@@ -1,9 +1,10 @@
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 
 export const fetchClients = createAsyncThunk('clients/fetch', async (token) => {
-  const { data } = await axios.get('https://dicsapps.space:3005/api/clients', {
+  const { data } = await axios.get(`${API_BASE_URL}/clients`, {
     headers: { Authorization: `Bearer ${token}` }
   });
   return data;
