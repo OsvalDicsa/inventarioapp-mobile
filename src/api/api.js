@@ -2,13 +2,19 @@
 import axios from 'axios';
 import { store } from '../store';
 import { addPendingRequest } from '../slices/queueSlice';
+import { logout } from '../slices/authSlice';
 import { API_BASE_URL } from '../config';
+import { isJwtExpired } from '../utils/jwt';
 
 const api = axios.create({ baseURL: API_BASE_URL });
 
 api.interceptors.request.use(config => {
   const token = store.getState().auth.token;
   if (token) {
+    if (isJwtExpired(token)) {
+      store.dispatch(logout());
+      return Promise.reject(new Error('Token expired'));
+    }
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;

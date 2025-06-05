@@ -2,6 +2,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
+import { isJwtExpired } from '../utils/jwt';
 
 const API = axios.create({ baseURL: API_BASE_URL });
 
@@ -29,7 +30,12 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.token = action.payload;
+        if (isJwtExpired(action.payload)) {
+          state.error = 'Token expirado';
+          state.token = null;
+        } else {
+          state.token = action.payload;
+        }
       })
       .addCase(login.rejected, (state, action) => {
         state.status = 'failed';
