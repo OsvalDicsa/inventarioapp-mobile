@@ -6,7 +6,6 @@ import {
   TextInput,
   Button,
   Image,
-  StyleSheet,
   Alert,
   KeyboardAvoidingView,
   ScrollView,
@@ -16,6 +15,8 @@ import {
   Modal,
   FlatList
 } from 'react-native';
+import { colors } from '../theme';
+import styles from '../styles/captureStyles';
 import * as ImagePicker from 'expo-image-picker';
 import { useRoute } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
@@ -199,13 +200,13 @@ export default function CaptureScreen({ navigation }) {
               </View>
             )}
             <View style={styles.photoButtonWrapper}>
-              <Button title="Tomar Foto" onPress={takePhoto} color="#333" />
+              <Button title="Tomar Foto" onPress={takePhoto} color={colors.dark} />
             </View>
           </View>
 
           {/* Botón Guardar */}
           <View style={styles.saveButtonWrapper}>
-            <Button title="Guardar" onPress={handleSave} color="#1f2937" />
+            <Button title="Guardar" onPress={handleSave} color={colors.dark} />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -213,159 +214,3 @@ export default function CaptureScreen({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#f3f4f6'
-  },
-  flex: {
-    flex: 1
-  },
-  container: {
-    padding: 16,
-    paddingBottom: 32
-  },
-  headerContainer: {
-    marginBottom: 24
-  },
-  headerText: {
-    fontSize: 16,
-    color: '#4b5563'
-  },
-  clientName: {
-    fontSize: 22,
-    fontWeight: '600',
-    color: '#1f2937',
-    marginTop: 4
-  },
-
-  // Dropdown “artículo”
-  sectionCard: {
-    backgroundColor: '#ffffff',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: '#e5e7eb'
-  },
-  sectionError: {
-    borderColor: '#dc2626'
-  },
-  sectionLabel: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#374151',
-    marginBottom: 8
-  },
-  dropdownInput: {
-    borderWidth: 1,
-    borderColor: '#d1d5db',
-    borderRadius: 6,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    backgroundColor: '#fafafa'
-  },
-  dropdownText: {
-    fontSize: 15,
-    color: '#111827'
-  },
-  dropdownPlaceholder: {
-    fontSize: 15,
-    color: '#999'
-  },
-
-  // Modal
-  modalContainer: {
-    flex: 1,
-    backgroundColor: '#ffffff'
-  },
-  modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e5e7eb'
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#1f2937'
-  },
-  modalCloseButton: {
-    padding: 8
-  },
-  modalCloseText: {
-    fontSize: 16,
-    color: '#2563eb'
-  },
-  modalSearchInput: {
-    borderWidth: 1,
-    borderColor: '#d1d5db',
-    borderRadius: 6,
-    margin: 16,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    fontSize: 16,
-    backgroundColor: '#fafafa',
-    color: '#111827'
-  },
-  articuloItem: {
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e5e7eb'
-  },
-  articuloText: {
-    fontSize: 16,
-    color: '#111827'
-  },
-  modalEmpty: {
-    marginTop: 32,
-    alignItems: 'center'
-  },
-  modalEmptyText: {
-    fontSize: 16,
-    color: '#6b7280'
-  },
-
-  // Resto del formulario
-  textInput: {
-    borderWidth: 1,
-    borderColor: '#d1d5db',
-    borderRadius: 6,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    fontSize: 15,
-    backgroundColor: '#fafafa',
-    color: '#111827'
-  },
-  photoPreview: {
-    width: '100%',
-    height: 200,
-    borderRadius: 6,
-    marginBottom: 12,
-    backgroundColor: '#e5e7eb'
-  },
-  photoPlaceholder: {
-    width: '100%',
-    height: 200,
-    borderRadius: 6,
-    marginBottom: 12,
-    backgroundColor: '#e5e7eb',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  photoPlaceholderText: {
-    color: '#6b7280',
-    fontSize: 16
-  },
-  photoButtonWrapper: {
-    width: '50%',
-    alignSelf: 'flex-start'
-  },
-  saveButtonWrapper: {
-    marginTop: 10,
-    marginHorizontal: 40
-  }
-});

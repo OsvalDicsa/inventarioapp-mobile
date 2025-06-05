@@ -1,6 +1,8 @@
 
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text, Alert } from 'react-native';
+import { View, TextInput, Button, Text, Alert } from 'react-native';
+import { colors } from '../theme';
+import styles from '../styles/loginStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../slices/authSlice';
 
@@ -34,23 +36,12 @@ export default function LoginScreen() {
         secureTextEntry
         style={styles.input}
       />
-      <Button title={status === 'loading' ? 'Cargando...' : 'Entrar'} onPress={handleLogin} />
+      <Button
+        title={status === 'loading' ? 'Cargando...' : 'Entrar'}
+        onPress={handleLogin}
+        color={colors.primary}
+      />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 16,
-  },
-  title: { fontSize: 24, marginBottom: 20, textAlign: 'center' },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 8,
-    marginBottom: 12,
-    borderRadius: 4
-  }
-});
