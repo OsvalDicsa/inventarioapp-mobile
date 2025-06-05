@@ -1,13 +1,7 @@
 // src/screens/ClientListScreen.js
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-  FlatList,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  Keyboard
-} from 'react-native';
+import { Keyboard } from 'react-native';
+import { Box, FlatList, Text, Pressable, Input, HStack, Badge } from 'native-base';
 import styles from '../styles/clientListStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchClients } from '../slices/clientsSlice';
@@ -47,7 +41,7 @@ export default function ClientListScreen({ navigation }) {
   }, [searchQuery, clients]);
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity
+    <Pressable
       style={styles.item}
       onPress={() => {
         Keyboard.dismiss();
@@ -56,20 +50,20 @@ export default function ClientListScreen({ navigation }) {
     >
       <Text style={styles.itemText}>{item.razonsocial}</Text>
       <Text style={styles.itemSubText}>Código: {item.codcliente}</Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 
   return (
-    <View style={styles.container}>
+    <Box style={styles.container}>
       {/* Encabezado con título y badge de pendientes */}
-      <View style={styles.headerRow}>
+      <HStack style={styles.headerRow} alignItems="center">
         <Text style={styles.title}>Clientes</Text>
         {pending.length > 0 && (
-          <View style={styles.badgeContainer}>
-            <Text style={styles.badgeText}>{pending.length}</Text>
-          </View>
+          <Badge style={styles.badgeContainer} _text={styles.badgeText}>
+            {pending.length}
+          </Badge>
         )}
-      </View>
+      </HStack>
 
       {/* Indicador sutil de estado de red (opcional) */}
       {!isConnected && pending.length > 0 && (
@@ -79,8 +73,8 @@ export default function ClientListScreen({ navigation }) {
       )}
 
       {/* Campo de búsqueda */}
-      <View style={styles.searchContainer}>
-        <TextInput
+      <Box style={styles.searchContainer}>
+        <Input
           placeholder="Buscar por código o razón social"
           placeholderTextColor="#6b7280"
           value={searchQuery}
@@ -88,7 +82,7 @@ export default function ClientListScreen({ navigation }) {
           style={styles.searchInput}
           clearButtonMode="while-editing"
         />
-      </View>
+      </Box>
 
       {/* Lista de clientes filtrada */}
       <FlatList
@@ -96,17 +90,17 @@ export default function ClientListScreen({ navigation }) {
         keyExtractor={item => item.codcliente.toString()}
         renderItem={renderItem}
         ListEmptyComponent={
-          <View style={styles.emptyContainer}>
+          <Box style={styles.emptyContainer}>
             <Text style={styles.emptyText}>
               {clients.length === 0
                 ? 'Cargando clientes...'
                 : 'No se encontraron clientes.'}
             </Text>
-          </View>
+          </Box>
         }
         keyboardShouldPersistTaps="handled"
       />
-    </View>
+    </Box>
   );
 }
 

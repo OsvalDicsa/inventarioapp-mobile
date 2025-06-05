@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, Alert } from 'react-native';
+import { Alert } from 'react-native';
+import { Box, Input, Button, Text, VStack } from 'native-base';
 import { colors } from '../theme';
 import styles from '../styles/loginStyles';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,27 +22,32 @@ export default function LoginScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Ingreso</Text>
-      <TextInput
-        placeholder="Usuario"
-        value={username}
-        onChangeText={setUsername}
-        style={styles.input}
-      />
-      <TextInput
-        placeholder="Contraseña"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        style={styles.input}
-      />
-      <Button
-        title={status === 'loading' ? 'Cargando...' : 'Entrar'}
-        onPress={handleLogin}
-        color={colors.primary}
-      />
-    </View>
+    <Box flex={1} justifyContent="center" p={4} bg={colors.background}>
+      <VStack space={3}>
+        <Text style={styles.title}>Ingreso</Text>
+        <Input
+          placeholder="Usuario"
+          value={username}
+          onChangeText={setUsername}
+          style={styles.input}
+        />
+        <Input
+          placeholder="Contraseña"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+          style={styles.input}
+        />
+        <Button
+          onPress={handleLogin}
+          bg={colors.primary}
+          _text={{ color: colors.white }}
+          isLoading={status === 'loading'}
+        >
+          Entrar
+        </Button>
+      </VStack>
+    </Box>
   );
 }
 

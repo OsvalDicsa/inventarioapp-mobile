@@ -1,20 +1,22 @@
 // src/screens/CaptureScreen.js
 import React, { useState, useEffect } from 'react';
 import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  Image,
   Alert,
   KeyboardAvoidingView,
   ScrollView,
   SafeAreaView,
-  Platform,
-  TouchableOpacity,
-  Modal,
-  FlatList
+  Platform
 } from 'react-native';
+import {
+  Box,
+  Text,
+  Input,
+  Button,
+  Image,
+  Modal,
+  FlatList,
+  Pressable
+} from 'native-base';
 import { colors } from '../theme';
 import styles from '../styles/captureStyles';
 import * as ImagePicker from 'expo-image-picker';
@@ -100,7 +102,7 @@ export default function CaptureScreen({ navigation }) {
 
   // Render de cada ítem en el dropdown
   const renderArticuloItem = ({ item }) => (
-    <TouchableOpacity
+    <Pressable
       style={styles.articuloItem}
       onPress={() => {
         setSelectedArticulo(item);
@@ -108,7 +110,7 @@ export default function CaptureScreen({ navigation }) {
       }}
     >
       <Text style={styles.articuloText}>{item.articulo} (#{item.cod_articulo})</Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 
   return (
@@ -119,42 +121,37 @@ export default function CaptureScreen({ navigation }) {
       >
         <ScrollView contentContainerStyle={styles.container}>
           {/* Encabezado */}
-          <View style={styles.headerContainer}>
+          <Box style={styles.headerContainer}>
             <Text style={styles.headerText}>Registro para:</Text>
             <Text style={styles.clientName}>{client.razonsocial}</Text>
-          </View>
+          </Box>
 
           {/* SECCIÓN: Dropdown de Artículo con búsqueda */}
-          <View style={[styles.sectionCard, !selectedArticulo && styles.sectionError]}>
+          <Box style={[styles.sectionCard, !selectedArticulo && styles.sectionError]}>
             <Text style={styles.sectionLabel}>Artículo</Text>
-            <TouchableOpacity
+            <Pressable
               style={styles.dropdownInput}
               onPress={() => setModalVisible(true)}
             >
               <Text style={selectedArticulo ? styles.dropdownText : styles.dropdownPlaceholder}>
                 {selectedArticulo ? selectedArticulo.articulo : '-- Seleccione un artículo --'}
               </Text>
-            </TouchableOpacity>
-          </View>
+            </Pressable>
+          </Box>
 
           {/* Modal para buscar y seleccionar artículo */}
-          <Modal
-            visible={modalVisible}
-            animationType="slide"
-            transparent={false}
-            onRequestClose={() => setModalVisible(false)}
-          >
+          <Modal isOpen={modalVisible} onClose={() => setModalVisible(false)}>
             <SafeAreaView style={styles.modalContainer}>
-              <View style={styles.modalHeader}>
+              <Box style={styles.modalHeader}>
                 <Text style={styles.modalTitle}>Buscar artículo</Text>
-                <TouchableOpacity
+                <Pressable
                   onPress={() => setModalVisible(false)}
                   style={styles.modalCloseButton}
                 >
                   <Text style={styles.modalCloseText}>Cerrar</Text>
-                </TouchableOpacity>
-              </View>
-              <TextInput
+                </Pressable>
+              </Box>
+              <Input
                 placeholder="Escriba nombre o código..."
                 placeholderTextColor="#999"
                 value={searchTerm}
@@ -167,9 +164,9 @@ export default function CaptureScreen({ navigation }) {
                 keyExtractor={item => item.cod_articulo.toString()}
                 renderItem={renderArticuloItem}
                 ListEmptyComponent={
-                  <View style={styles.modalEmpty}>
+                  <Box style={styles.modalEmpty}>
                     <Text style={styles.modalEmptyText}>No se encontraron artículos.</Text>
-                  </View>
+                  </Box>
                 }
                 keyboardShouldPersistTaps="handled"
               />
@@ -177,9 +174,9 @@ export default function CaptureScreen({ navigation }) {
           </Modal>
 
           {/* SECCIÓN: Cantidad */}
-          <View style={[styles.sectionCard, !qty && styles.sectionError]}>
+          <Box style={[styles.sectionCard, !qty && styles.sectionError]}>
             <Text style={styles.sectionLabel}>Cantidad</Text>
-            <TextInput
+            <Input
               placeholder="Ingrese cantidad"
               placeholderTextColor="#999"
               value={qty}
@@ -187,27 +184,31 @@ export default function CaptureScreen({ navigation }) {
               keyboardType="numeric"
               style={styles.textInput}
             />
-          </View>
+          </Box>
 
           {/* SECCIÓN: Foto */}
-          <View style={[styles.sectionCard, !photo && styles.sectionError]}>
+          <Box style={[styles.sectionCard, !photo && styles.sectionError]}>
             <Text style={styles.sectionLabel}>Foto del producto</Text>
             {photo ? (
               <Image source={{ uri: photo.uri }} style={styles.photoPreview} />
             ) : (
-              <View style={styles.photoPlaceholder}>
+              <Box style={styles.photoPlaceholder}>
                 <Text style={styles.photoPlaceholderText}>Sin foto</Text>
-              </View>
+              </Box>
             )}
-            <View style={styles.photoButtonWrapper}>
-              <Button title="Tomar Foto" onPress={takePhoto} color={colors.dark} />
-            </View>
-          </View>
+            <Box style={styles.photoButtonWrapper}>
+              <Button onPress={takePhoto} bg={colors.dark} _text={{ color: colors.white }}>
+                Tomar Foto
+              </Button>
+            </Box>
+          </Box>
 
           {/* Botón Guardar */}
-          <View style={styles.saveButtonWrapper}>
-            <Button title="Guardar" onPress={handleSave} color={colors.dark} />
-          </View>
+          <Box style={styles.saveButtonWrapper}>
+            <Button onPress={handleSave} bg={colors.dark} _text={{ color: colors.white }}>
+              Guardar
+            </Button>
+          </Box>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
