@@ -1,9 +1,8 @@
 
 import React, { useState } from 'react';
-import { Alert } from 'react-native';
-import { Box, Input, Button, Text, VStack } from 'native-base';
+import { View, StyleSheet, Alert } from 'react-native';
+import { TextInput, Button, Text } from 'react-native-paper';
 import { colors } from '../theme';
-import styles from '../styles/loginStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../slices/authSlice';
 
@@ -22,32 +21,49 @@ export default function LoginScreen() {
   };
 
   return (
-    <Box flex={1} justifyContent="center" p={4} bg={colors.background}>
-      <VStack space={3}>
-        <Text style={styles.title}>Ingreso</Text>
-        <Input
-          placeholder="Usuario"
-          value={username}
-          onChangeText={setUsername}
-          style={styles.input}
-        />
-        <Input
-          placeholder="Contraseña"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-          style={styles.input}
-        />
-        <Button
-          onPress={handleLogin}
-          bg={colors.primary}
-          _text={{ color: colors.white }}
-          isLoading={status === 'loading'}
-        >
-          Entrar
-        </Button>
-      </VStack>
-    </Box>
+    <View style={styles.container}>
+      <Text variant="headlineMedium" style={styles.title}>
+        Ingreso
+      </Text>
+      <TextInput
+        mode="outlined"
+        label="Usuario"
+        value={username}
+        onChangeText={setUsername}
+        style={styles.input}
+      />
+      <TextInput
+        mode="outlined"
+        label="Contraseña"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+        style={styles.input}
+      />
+      <Button
+        mode="contained"
+        onPress={handleLogin}
+        loading={status === 'loading'}
+      >
+        Entrar
+      </Button>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 16,
+    backgroundColor: colors.background
+  },
+  title: {
+    textAlign: 'center',
+    marginBottom: 20
+  },
+  input: {
+    marginBottom: 12
+  }
+});
 

@@ -5,19 +5,14 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   SafeAreaView,
-  Platform
-} from 'react-native';
-import {
-  Box,
+  Platform,
+  View,
   Text,
-  Input,
-  Button,
   Image,
-  Modal,
   FlatList,
-  Pressable
-} from 'native-base';
-import { colors } from '../theme';
+  TouchableOpacity
+} from 'react-native';
+import { TextInput, Button, Modal, Portal } from 'react-native-paper';
 import styles from '../styles/captureStyles';
 import * as ImagePicker from 'expo-image-picker';
 import { useRoute } from '@react-navigation/native';
@@ -102,7 +97,7 @@ export default function CaptureScreen({ navigation }) {
 
   // Render de cada ítem en el dropdown
   const renderArticuloItem = ({ item }) => (
-    <Pressable
+    <TouchableOpacity
       style={styles.articuloItem}
       onPress={() => {
         setSelectedArticulo(item);
@@ -110,7 +105,7 @@ export default function CaptureScreen({ navigation }) {
       }}
     >
       <Text style={styles.articuloText}>{item.articulo} (#{item.cod_articulo})</Text>
-    </Pressable>
+    </TouchableOpacity>
   );
 
   return (
@@ -121,62 +116,64 @@ export default function CaptureScreen({ navigation }) {
       >
         <ScrollView contentContainerStyle={styles.container}>
           {/* Encabezado */}
-          <Box style={styles.headerContainer}>
+          <View style={styles.headerContainer}>
             <Text style={styles.headerText}>Registro para:</Text>
             <Text style={styles.clientName}>{client.razonsocial}</Text>
-          </Box>
+          </View>
 
           {/* SECCIÓN: Dropdown de Artículo con búsqueda */}
-          <Box style={[styles.sectionCard, !selectedArticulo && styles.sectionError]}>
+          <View style={[styles.sectionCard, !selectedArticulo && styles.sectionError]}>
             <Text style={styles.sectionLabel}>Artículo</Text>
-            <Pressable
+            <TouchableOpacity
               style={styles.dropdownInput}
               onPress={() => setModalVisible(true)}
             >
               <Text style={selectedArticulo ? styles.dropdownText : styles.dropdownPlaceholder}>
                 {selectedArticulo ? selectedArticulo.articulo : '-- Seleccione un artículo --'}
               </Text>
-            </Pressable>
-          </Box>
+            </TouchableOpacity>
+          </View>
 
           {/* Modal para buscar y seleccionar artículo */}
-          <Modal isOpen={modalVisible} onClose={() => setModalVisible(false)}>
-            <SafeAreaView style={styles.modalContainer}>
-              <Box style={styles.modalHeader}>
-                <Text style={styles.modalTitle}>Buscar artículo</Text>
-                <Pressable
-                  onPress={() => setModalVisible(false)}
-                  style={styles.modalCloseButton}
-                >
-                  <Text style={styles.modalCloseText}>Cerrar</Text>
-                </Pressable>
-              </Box>
-              <Input
-                placeholder="Escriba nombre o código..."
-                placeholderTextColor="#999"
-                value={searchTerm}
-                onChangeText={setSearchTerm}
-                style={styles.modalSearchInput}
-                autoFocus
-              />
-              <FlatList
-                data={filteredArticulos}
-                keyExtractor={item => item.cod_articulo.toString()}
-                renderItem={renderArticuloItem}
-                ListEmptyComponent={
-                  <Box style={styles.modalEmpty}>
-                    <Text style={styles.modalEmptyText}>No se encontraron artículos.</Text>
-                  </Box>
-                }
-                keyboardShouldPersistTaps="handled"
-              />
-            </SafeAreaView>
-          </Modal>
+          <Portal>
+            <Modal visible={modalVisible} onDismiss={() => setModalVisible(false)}>
+              <SafeAreaView style={styles.modalContainer}>
+                <View style={styles.modalHeader}>
+                  <Text style={styles.modalTitle}>Buscar artículo</Text>
+                  <TouchableOpacity
+                    onPress={() => setModalVisible(false)}
+                    style={styles.modalCloseButton}
+                  >
+                    <Text style={styles.modalCloseText}>Cerrar</Text>
+                  </TouchableOpacity>
+                </View>
+                <TextInput
+                  placeholder="Escriba nombre o código..."
+                  placeholderTextColor="#999"
+                  value={searchTerm}
+                  onChangeText={setSearchTerm}
+                  style={styles.modalSearchInput}
+                  autoFocus
+                />
+                <FlatList
+                  data={filteredArticulos}
+                  keyExtractor={item => item.cod_articulo.toString()}
+                  renderItem={renderArticuloItem}
+                  ListEmptyComponent={
+                    <View style={styles.modalEmpty}>
+                      <Text style={styles.modalEmptyText}>No se encontraron artículos.</Text>
+                    </View>
+                  }
+                  keyboardShouldPersistTaps="handled"
+                />
+              </SafeAreaView>
+            </Modal>
+          </Portal>
 
           {/* SECCIÓN: Cantidad */}
-          <Box style={[styles.sectionCard, !qty && styles.sectionError]}>
+          <View style={[styles.sectionCard, !qty && styles.sectionError]}>
             <Text style={styles.sectionLabel}>Cantidad</Text>
-            <Input
+            <TextInput
               placeholder="Ingrese cantidad"
               placeholderTextColor="#999"
               value={qty}
@@ -184,31 +181,31 @@ export default function CaptureScreen({ navigation }) {
               keyboardType="numeric"
               style={styles.textInput}
             />
-          </Box>
+          </View>
 
           {/* SECCIÓN: Foto */}
-          <Box style={[styles.sectionCard, !photo && styles.sectionError]}>
+          <View style={[styles.sectionCard, !photo && styles.sectionError]}>
             <Text style={styles.sectionLabel}>Foto del producto</Text>
             {photo ? (
               <Image source={{ uri: photo.uri }} style={styles.photoPreview} />
             ) : (
-              <Box style={styles.photoPlaceholder}>
+              <View style={styles.photoPlaceholder}>
                 <Text style={styles.photoPlaceholderText}>Sin foto</Text>
-              </Box>
+              </View>
             )}
-            <Box style={styles.photoButtonWrapper}>
-              <Button onPress={takePhoto} bg={colors.dark} _text={{ color: colors.white }}>
+            <View style={styles.photoButtonWrapper}>
+              <Button mode="contained" onPress={takePhoto}>
                 Tomar Foto
               </Button>
-            </Box>
-          </Box>
+            </View>
+          </View>
 
           {/* Botón Guardar */}
-          <Box style={styles.saveButtonWrapper}>
-            <Button onPress={handleSave} bg={colors.dark} _text={{ color: colors.white }}>
+          <View style={styles.saveButtonWrapper}>
+            <Button mode="contained" onPress={handleSave}>
               Guardar
             </Button>
-          </Box>
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
