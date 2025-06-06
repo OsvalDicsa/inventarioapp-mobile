@@ -36,3 +36,8 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 android/app/debug.keystore
+
+# Backend
+backend/.env
+backend/uploads/*
+!backend/uploads/.gitkeep
