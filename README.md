@@ -51,3 +51,7 @@ npm test
 ## Building
 
 For release builds, follow Expo and React Native guidelines to generate your own signing keys.
+
+## Backend
+
+The Express API lives in the `backend` folder. See `backend/README.md` for setup and usage.
