@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { enableScreens } from 'react-native-screens';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { NativeBaseProvider } from 'native-base';
+import { Provider as PaperProvider } from 'react-native-paper';
 
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -29,7 +29,7 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       {/* 2) Habilitamos provider de safe area */}
       <SafeAreaProvider>
-        <NativeBaseProvider>
+        <PaperProvider>
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
               <NavigationContainer>
@@ -37,7 +37,7 @@ export default function App() {
               </NavigationContainer>
             </PersistGate>
           </Provider>
-        </NativeBaseProvider>
+        </PaperProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );
