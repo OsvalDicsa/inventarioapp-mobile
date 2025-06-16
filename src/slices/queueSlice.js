@@ -19,7 +19,7 @@ const queueSlice = createSlice({
         state.pending.push(action.payload);
       },
       prepare(payload) {
-        // payload debería ser un objeto con { codcliente, cod_articulo, qty, photoUri, photoName, photoType }
+        // payload: { codcliente, cod_articulo, qty, photoUri?, photoName?, photoType? }
         return { payload: { id: nanoid(), ...payload } };
       }
     },
@@ -56,11 +56,13 @@ export const flushQueue = () => async (dispatch, getState) => {
       formData.append('codcliente', item.codcliente);
       formData.append('cod_articulo', item.cod_articulo);
       formData.append('qty', item.qty.toString());
-      formData.append('photo', {
-        uri: item.photoUri,
-        name: item.photoName,
-        type: item.photoType
-      });
+      if (item.photoUri) {
+        formData.append('photo', {
+          uri: item.photoUri,
+          name: item.photoName,
+          type: item.photoType
+        });
+      }
 
       // Enviamos cada petición al endpoint /records
       await api.post('/records', formData, {

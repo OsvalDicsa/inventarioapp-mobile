@@ -19,6 +19,8 @@ import { useRoute } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { addPendingRequest, flushQueue } from '../slices/queueSlice';
 
+const SIN_ACTIVOS = { cod_articulo: 1, articulo: 'SIN ACTIVOS' };
+
 export default function CaptureScreen({ navigation }) {
   const route = useRoute();
   const { client } = route.params;
@@ -74,20 +76,35 @@ export default function CaptureScreen({ navigation }) {
     setSelectedArticulo(null);
   };
 
+  const handleSinActivos = () => {
+    setSelectedArticulo(SIN_ACTIVOS);
+    setQty('0');
+  };
+
   const handleSave = () => {
-    if (!qty || !photo || !selectedArticulo) {
-      Alert.alert('Error', 'Faltan datos: artículo, cantidad o foto');
+    if (!selectedArticulo) {
+      Alert.alert('Error', 'Falta seleccionar artículo');
+      return;
+    }
+
+    if (selectedArticulo.cod_articulo !== SIN_ACTIVOS.cod_articulo && (!qty || !photo)) {
+      Alert.alert('Error', 'Faltan datos: cantidad o foto');
       return;
     }
 
     const newRequest = {
       codcliente: client.codcliente,
       cod_articulo: selectedArticulo.cod_articulo,
-      qty,
-      photoUri: photo.uri,
-      photoName: photo.name,
-      photoType: photo.type
+      qty
     };
+
+    if (photo) {
+      Object.assign(newRequest, {
+        photoUri: photo.uri,
+        photoName: photo.name,
+        photoType: photo.type
+      });
+    }
 
     dispatch(addPendingRequest(newRequest));
     dispatch(flushQueue());
@@ -134,6 +151,12 @@ export default function CaptureScreen({ navigation }) {
             </TouchableOpacity>
           </View>
 
+          <View style={styles.sinActivosWrapper}>
+            <Button mode="outlined" onPress={handleSinActivos}>
+              Sin activos
+            </Button>
+          </View>
+
           {/* Modal para buscar y seleccionar artículo */}
           <Portal>
             <Modal visible={modalVisible} onDismiss={() => setModalVisible(false)}>
@@ -171,7 +194,10 @@ export default function CaptureScreen({ navigation }) {
           </Portal>
 
           {/* SECCIÓN: Cantidad */}
-          <View style={[styles.sectionCard, !qty && styles.sectionError]}>
+          <View style={[
+            styles.sectionCard,
+            !qty && selectedArticulo?.cod_articulo !== SIN_ACTIVOS.cod_articulo && styles.sectionError
+          ]}>
             <Text style={styles.sectionLabel}>Cantidad</Text>
             <TextInput
               placeholder="Ingrese cantidad"
@@ -180,11 +206,15 @@ export default function CaptureScreen({ navigation }) {
               onChangeText={setQty}
               keyboardType="numeric"
               style={styles.textInput}
+              editable={selectedArticulo?.cod_articulo !== SIN_ACTIVOS.cod_articulo}
             />
           </View>
 
           {/* SECCIÓN: Foto */}
-          <View style={[styles.sectionCard, !photo && styles.sectionError]}>
+          <View style={[
+            styles.sectionCard,
+            !photo && selectedArticulo?.cod_articulo !== SIN_ACTIVOS.cod_articulo && styles.sectionError
+          ]}>
             <Text style={styles.sectionLabel}>Foto del producto</Text>
             {photo ? (
               <Image source={{ uri: photo.uri }} style={styles.photoPreview} />
