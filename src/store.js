@@ -6,18 +6,20 @@ import authReducer from './slices/authSlice';
 import queueReducer from './slices/queueSlice';
 import clientsReducer from './slices/clientsSlice';
 import articulosReducer from './slices/articulosSlice';
+import recordsReducer from './slices/recordsSlice';
 
 const rootReducer = combineReducers({
   auth: authReducer,
   queue: queueReducer,
   clients: clientsReducer,
   articulos: articulosReducer,
+  records: recordsReducer,
 });
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['auth', 'queue', 'clients', 'articulos']
+  whitelist: ['auth', 'queue', 'clients', 'articulos', 'records']
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
