@@ -1,5 +1,5 @@
 // src/screens/ClientListScreen.js
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { Keyboard } from 'react-native';
 import { View, FlatList, Text, TextInput, TouchableOpacity } from 'react-native';
 import { Badge } from 'react-native-paper';
@@ -18,6 +18,16 @@ export default function ClientListScreen({ navigation }) {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredClients, setFilteredClients] = useState([]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={() => navigation.navigate('Records')} style={{ marginRight: 10 }}>
+          <Text style={{ color: 'white' }}>Registros</Text>
+        </TouchableOpacity>
+      )
+    });
+  }, [navigation]);
 
   // 1) Fetch inicial (clientes, artículos, y primer intento de vaciar cola)
   useEffect(() => {
