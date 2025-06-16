@@ -62,6 +62,11 @@ export default StyleSheet.create({
     color: colors.muted
   },
 
+  sinActivosWrapper: {
+    alignItems: 'flex-start',
+    marginBottom: 20
+  },
+
   // Modal
   modalContainer: {
     flex: 1,
