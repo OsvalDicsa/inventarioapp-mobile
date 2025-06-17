@@ -43,3 +43,16 @@ export const uploadData = async ({ codcliente, cod_articulo, qty, photo }) => {
   });
   return { queued: false };
 };
+
+export const fetchRecords = async () => {
+  const { data } = await api.get('/records');
+  return data;
+};
+
+export const updateRecordApi = async ({ id, codcliente, cod_articulo, qty }) => {
+  await api.put(`/records/${id}`, { codcliente, cod_articulo, qty });
+};
+
+export const deleteRecordApi = async id => {
+  await api.delete(`/records/${id}`);
+};

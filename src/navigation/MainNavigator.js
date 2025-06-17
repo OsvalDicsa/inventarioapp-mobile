@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import LoginScreen from '../screens/LoginScreen';
 import ClientListScreen from '../screens/ClientListScreen';
 import CaptureScreen from '../screens/CaptureScreen';
+import RecordListScreen from '../screens/RecordListScreen';
+import RecordEditScreen from '../screens/RecordEditScreen';
 import { isJwtExpired } from '../utils/jwt';
 import { logout } from '../slices/authSlice';
 import { colors } from '../theme';
@@ -40,6 +42,16 @@ export default function MainNavigator() {
             name="Capture"
             component={CaptureScreen}
             options={{ title: 'Registro' }}
+          />
+          <Stack.Screen
+            name="Records"
+            component={RecordListScreen}
+            options={{ title: 'Registros' }}
+          />
+          <Stack.Screen
+            name="EditRecord"
+            component={RecordEditScreen}
+            options={{ title: 'Editar Registro' }}
           />
         </>
       ) : (
