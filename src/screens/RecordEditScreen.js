@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { updateRecord } from '../slices/recordsSlice';
@@ -20,6 +20,9 @@ export default function RecordEditScreen({ route, navigation }) {
 
   return (
     <View style={styles.container}>
+      {record.photoUrl && (
+        <Image source={{ uri: record.photoUrl }} style={styles.photo} />
+      )}
       <Text style={styles.label}>Cliente</Text>
       <TextInput value={codcliente} onChangeText={setCodcliente} style={styles.input} />
       <Text style={styles.label}>Artículo</Text>
